@@ -21,8 +21,8 @@ module.exports = {
 
   // Backend servers to distribute traffic across
   backends: [
-    { host: "localhost", port: 3001 },
-    { host: "localhost", port: 3002 },
-    { host: "localhost", port: 3003 },
+  { host: "localhost", port: 3001, weight: 3 },
+  { host: "localhost", port: 3002, weight: 1 },
+  { host: "localhost", port: 3003, weight: 1 },
   ],
 };

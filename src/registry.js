@@ -17,6 +17,7 @@ const servers = config.backends.map((b) => ({
   port:          b.port,
   label:         `${b.host}:${b.port}`,  // display string
   status:        "UP",                    // "UP" | "DOWN"
+  weight:        b.weight || 1,
   totalRequests: 0,
   activeConns:   0,
   totalRespTime: 0,                       // cumulative ms (for avg calc)

@@ -12,7 +12,7 @@
  * by any code that holds a reference to the config object.
  */
 
-const config   = require("../config");
+const config = require("../config");
 const registry = require("./registry");
 
 // Round-robin cursor — persists across calls
@@ -26,15 +26,22 @@ function pickServer() {
   if (alive.length === 0) return null;
 
   if (config.algorithm === "round-robin") {
-    // Walk the full list starting from rrIndex; skip any DOWN server.
-    // This handles gaps (e.g. server[1] is DOWN) without changing the cycle.
-    const total = registry.servers.length;
-    for (let i = 0; i < total; i++) {
-      const candidate = registry.servers[rrIndex % total];
-      rrIndex++;
-      if (candidate.status === "UP") return candidate;
-    }
-    return null; // all down (shouldn't reach here; alive check above guards it)
+    const alive = registry.getHealthy();
+
+    // build weighted list
+    const pool = [];
+    alive.forEach(s => {
+      for (let i = 0; i < s.weight; i++) {
+        pool.push(s);
+      }
+    });
+
+    if (pool.length === 0) return null;
+
+    const server = pool[rrIndex % pool.length];
+    rrIndex++;
+
+    return server;
   }
 
   if (config.algorithm === "least-connections") {
