@@ -1,27 +1,11 @@
 "use strict";
 
-/**
- * src/dashboard.js
- * Dashboard — terminal redraw loop + static HTML for /dashboard.
- *
- * Terminal dashboard:
- *   Clears the screen and redraws a formatted table every N ms.
- *   Uses only process.stdout / console — no external deps.
- *
- * Web dashboard:
- *   Returns a single self-contained HTML page. The page fetches /metrics
- *   every 2 s via JS and updates the table in place.
- *   Design rules: black bg, monospace font, no frameworks, no animations.
- */
-
 const config  = require("../config");
 const metrics = require("./metrics");
 
-// ── helpers ──────────────────────────────────────────────────────────────────
 
-const p = (v, n) => String(v).padEnd(n);   // left-align in fixed-width column
+const p = (v, n) => String(v).padEnd(n);  
 
-// ── Terminal Dashboard ────────────────────────────────────────────────────────
 
 function draw() {
   const m   = metrics.snapshot();
@@ -57,9 +41,7 @@ function startTerminal() {
   setInterval(draw, config.dashboardRefresh);
 }
 
-// ── Web Dashboard HTML ────────────────────────────────────────────────────────
 
-// Intentionally minimal: ~55 lines, no framework, looks like a terminal screen.
 const HTML = `<!DOCTYPE html>
 <html lang="en">
 <head>

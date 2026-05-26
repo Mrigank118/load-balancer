@@ -1,21 +1,10 @@
 "use strict";
 
-/**
- * src/metrics.js
- * Metrics — computes a clean snapshot of runtime state from the registry.
- *
- * Consumed by:
- *   - /metrics endpoint (JSON API)
- *   - terminal dashboard
- *   - web dashboard (via /metrics fetch)
- */
 
 const config   = require("../config");
 const registry = require("./registry");
 
-/**
- * Returns a plain object suitable for JSON serialisation or display.
- */
+
 function snapshot() {
   return {
     algorithm: config.algorithm,
